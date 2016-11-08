@@ -1,5 +1,5 @@
 #ignore folder
 /target/
-.settings
+/.settings/
 #ignore files
 .classpath
