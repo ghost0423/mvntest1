@@ -1,8 +1,146 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.luffy</groupId>
   <artifactId>mvnTest1</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
   <name>maven test project 1</name>
   <description>the first maven test project</description>
+  <inceptionYear>2016</inceptionYear>
+
+  <properties>
+    <springVersion>4.3.3.RELEASE</springVersion>
+    <junitVersion></junitVersion>
+    <logVersion></logVersion>
+  </properties>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${springVersion}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+
+  <build>
+    <!-- <defaultGoal>package</defaultGoal> 
+    <directory>${basedir}/target</directory>-->
+    <finalName>${artifactId}</finalName>
+    <!--  <outputDirectory>${basedir}/target/classes</outputDirectory>
+    <testOutputDirectory>${basedir}/target/test-classes</testOutputDirectory>-->
+    <!--<filters>
+      <filter>src/main/filters/application.properties</filter>
+    </filters>-->
+    <resources>
+      <!--  <resource>
+        <targetPath>/config</targetPath>打包后放入web-info目录下 ,默认路径是classes
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <excludes>
+          <exclude>./*。xml</exclude>--><!-- (**/*.xml包含子路径)当前路径下所有的xml文件不打包到web-info下 
+        </excludes>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>-->
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.6.0</version>
+        <inherited>true</inherited>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <!-- jetty plugin -->
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.3.13.v20161014</version>
+        <configuration>
+        <!-- 修改默认端口号--> 
+          <httpConnector>
+            <port>11111</port>
+          </httpConnector>
+          <!-- 热部署扫描时间，0表示不使用热部署 -->
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <!-- 关闭jetty配置 -->
+          <stopKey>shutdown</stopKey>
+          <stopPort>11112</stopPort>
+          
+         <webApp>
+                 <!--  配置jetty项目路径 ，默认为/-->
+            <contextPath>/${artifactId}</contextPath>
+          </webApp>
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>defaultProfile</id><!-- default active -->
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <test.aa>testaaa</test.aa>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdkProfile</id><!-- jdk1.7时使用该配置 -->
+      <activation>
+        <jdk>1.7</jdk>
+      </activation>
+      <properties>
+        <test.aa>testbbb</test.aa>
+      </properties>
+    </profile>
+  </profiles>
+
+  <repositories>
+    <repository>
+      <id>nexus-aliyun</id>
+      <name>Nexus aliyun</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>nexus-aliyun</id>
+      <name>Nexus aliyun</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
+
+
+
+  <developers>
+    <developer>
+      <name>luffy</name>
+      <id>luffy</id>
+      <email>aaa@aaa.com</email>
+    </developer>
+  </developers>
 </project>
